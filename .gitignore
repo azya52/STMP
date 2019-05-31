@@ -1,10 +1,10 @@
 \Release
 \.settings
-\Debug\Drivers
-\Debug\fatfs
-\Debug\Middlewares
-\Debug\Src
-\Debug\startup
+#\Debug\Drivers
+#\Debug\fatfs
+#\Debug\Middlewares
+#\Debug\Src
+#\Debug\startup
 # Prerequisites
 *.d
 
@@ -12,7 +12,6 @@
 *.o
 *.ko
 *.obj
-*.elf
 
 # Linker output
 *.ilk
@@ -41,7 +40,6 @@
 *.app
 *.i*86
 *.x86_64
-*.hex
 
 # Debug files
 *.dSYM/
