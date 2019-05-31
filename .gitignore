@@ -1,3 +1,10 @@
+\Release
+\.settings
+\Debug\Drivers
+\Debug\fatfs
+\Debug\Middlewares
+\Debug\Src
+\Debug\startup
 # Prerequisites
 *.d
 
