@@ -8,7 +8,7 @@
 
 На текущий момент готова [прошивка](https://github.com/azya52/STMP/tree/master/STMP/Debug) для популярной отладочной платы "Blue Pill" на микроконтроллере STM32F103C8T6.
 
-<img src="/HW/DSC05896.JPG?raw=true" width="70%">
+<img src="/HW/DSC05896.JPG?raw=true" width="49%"> <img src="/HW/DSC05900.JPG?raw=true" width="49%">
 
 **Что понадобится:**
 - Сама отладочная плата Blue Pill;
