@@ -3829,62 +3829,36 @@ FRESULT f_read_byte (
 	uint8_t* buff		/* Pointer to data buffer */
 )
 {
-	//FRESULT res;
 	FATFS *fs = fp->obj.fs;
-
-	//res = validate(&fp->obj, &fs);
-	//if (res != FR_OK || (res = (FRESULT)fp->err) != FR_OK) LEAVE_FF(fs, res);
-	//if (!(fp->flag & FA_READ)) LEAVE_FF(fs, FR_DENIED);
 
 	if (fp->obj.objsize - fp->fptr<=0) {
 		LEAVE_FF(fs, FR_DISK_ERR);
 	}
 
 	if ((fp->fptr % SS(fs)) == 0) {
-		UINT csect = (UINT)(fp->fptr / SS(fs) & (fs->csize - 1));
-		//count_tic1 = DWT_CYCCNT1;
-		//DWT_CYCCNT1 = 0;
+		uint32_t csect = (fp->fptr / SS(fs) & (fs->csize - 1));
 		if (csect == 0) {
 			DWORD clst;
 			if (fp->fptr == 0) {
 				clst = fp->obj.sclust;
 			} else {
-	#if FF_USE_FASTSEEK
-				if (fp->cltbl) {
-					//clst = clmt_clust(fp, fp->fptr);
-
-					DWORD ncl;
-					DWORD *tbl = fp->cltbl + 1;
-					clst = (DWORD)(fp->fptr / SS(fs) / fs->csize);
-					for (;;) {
-						ncl = *tbl++;
-						if (ncl == 0 || clst < ncl) break;
-						clst -= ncl; tbl++;
-					}
-					if(ncl == 0) {
-						ABORT(fs, FR_INT_ERR);
-					}else {
-						clst += *tbl;
-					}
-
-				} else
-	#endif
-				{
-					clst = get_fat(&fp->obj, fp->clust);
+				clst = clmt_clust(fp, fp->fptr);
+				DWORD ncl;
+				DWORD *tbl = fp->cltbl + 1;
+				clst = (DWORD)(fp->fptr / SS(fs) / fs->csize);
+				for (;;) {
+					ncl = *tbl++;
+					if (ncl == 0 || clst < ncl) break;
+					clst -= ncl;
+					tbl++;
 				}
+				clst += *tbl;
 			}
-			if (clst < 2) ABORT(fs, FR_INT_ERR);
-			if (clst == 0xFFFFFFFF) ABORT(fs, FR_DISK_ERR);
 			fp->clust = clst;
 		}
 
-		//fp->sect = clst2sect(fs, fp->clust)+csect;
-
 		if(fp->clust >= fs->n_fatent) return 0;
 		fp->sect = fs->database + fs->csize * (fp->clust - 2) + csect;
-
-		if (fp->sect == csect) ABORT(fs, FR_INT_ERR);
-
 	}
 
 	*buff = *(uint8_t*)(FLASH_MSD_START_ADDR + fp->sect*FLASH_PAGE_SIZE+fp->fptr % SS(fs));

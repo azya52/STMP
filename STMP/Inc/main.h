@@ -27,9 +27,11 @@
 extern "C" {
 #endif
 
-/* Includes ------------------------------------------------------------------*/
+/* Includes ----------------W--------------------------------------------------*/
 #include "stm32f1xx_hal.h"
 #include "stm32f1xx_hal_pwr.h"
+#include "usb_device.h"
+
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -40,7 +42,7 @@ extern "C" {
 /* USER CODE BEGIN ET */
 
 #define FLASH_START_ADDR	0x08000000
-#define FLASH_FIRM_SIZE		0x00004400					//16kB for firmware
+#define FLASH_FIRM_SIZE		0x00004400					//17kB for firmware
 #define FLASH_FLASH_SIZE	0x00020000					//undocumented 128kB flash
 #define FLASH_MSD_SIZE		(FLASH_FLASH_SIZE-FLASH_FIRM_SIZE)	//Mass storage size
 #define FLASH_MSD_START_ADDR	(FLASH_START_ADDR + FLASH_FIRM_SIZE)	//USB MSD start address
